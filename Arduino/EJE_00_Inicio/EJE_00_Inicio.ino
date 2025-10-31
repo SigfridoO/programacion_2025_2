@@ -77,7 +77,7 @@ char caracterFin = '_';
 #define CONTROL 49 // '1'
 #define ADMINISTRACION 50 // '2'
 
-#define SOLICITUD_MODIFICAR_BANDERA 49 // '1' 
+#define SOLICITUD_MODIFICAR_BANDERA 51 // '3' 
 
 void obtenerInstruccion();
 
@@ -283,9 +283,9 @@ void obtenerInstruccion(){
   numeroDeInstruccion = obtenerByteDeArregloByte(cadena + 2 );
   
   Serial.print("\ntipo: ");
-  Serial.write(tipoDeInstruccion);
+  Serial.print(tipoDeInstruccion);
   Serial.print(",   numero: ");
-  Serial.write(numeroDeInstruccion);
+  Serial.print(numeroDeInstruccion);
 
   switch(tipoDeInstruccion) {
     case CONTROL:
@@ -297,9 +297,9 @@ void obtenerInstruccion(){
           M[indice] = valor;
 
           Serial.print("\nM: ");
-          Serial.write(indice);
+          Serial.print(indice);
           Serial.print(" = ");
-          Serial.write(valor);
+          Serial.print(valor);
           
       }
       break;
