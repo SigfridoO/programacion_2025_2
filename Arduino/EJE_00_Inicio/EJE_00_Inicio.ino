@@ -72,6 +72,15 @@ void leerInstruccionesDeBuffer(byte *, int *, byte *, int *);
 char caracterInicio = '*';
 char caracterFin = '_';
 
+// Parametros de comunicacion
+
+#define CONTROL 49 // '1'
+#define ADMINISTRACION 50 // '2'
+
+#define SOLICITUD_MODIFICAR_BANDERA 49 // '1' 
+
+void obtenerInstruccion();
+
 void setup() {
   // Configurando pines
   pinMode(DI_00, INPUT);
@@ -250,13 +259,45 @@ void leerInstruccionesDeBuffer(byte *ptrBufferLectura, int *ptrBufferIndice,
           }
           imprimirTrama(ptrBufferInstruccion, 0, *ptrTamanioBufferInstruccion);
           *ptrBufferIndice = 0;
+
+          obtenerInstruccion();
         }
       }
     }
   }
-    
-  
 }
+
+void obtenerInstruccion(){
+  int *tamanio;
+  byte *cadena;
+
+  int tipoDeInstruccion = 0;
+  int numeroDeInstruccion = 0;
+
+  tamanio = &bufferIndiceInstruccion;
+  cadena =  bufferInstruccion;
+
+  tipoDeInstruccion = obtenerByteDeArregloByte(cadena + 1);
+  numeroDeInstruccion = obtenerByteDeArregloByte(cadena + 2 );
+  
+  Serial.print("\ntipo: ");
+  Serial.write(tipoDeInstruccion);
+  Serial.print(",   numero: ");
+  Serial.write(numeroDeInstruccion);
+}
+
+byte obtenerByteDeArregloByte(byte* arreglo) {
+  byte *puntero;
+  puntero = (byte *) arreglo;
+  return *puntero;
+}
+
+int obtenerIntDeArregloByte(byte* arreglo) {
+  int *puntero;
+  puntero = (int *) arreglo;
+  return *puntero;
+}
+
 
 void imprimirTrama(byte *ptrTrama, int inicio, int tamanio) {
   for(int k = inicio; k <inicio + tamanio; k++) {
