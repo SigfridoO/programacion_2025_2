@@ -270,6 +270,8 @@ void leerInstruccionesDeBuffer(byte *ptrBufferLectura, int *ptrBufferIndice,
 void obtenerInstruccion(){
   int *tamanio;
   byte *cadena;
+  int indice;
+  int valor;
 
   int tipoDeInstruccion = 0;
   int numeroDeInstruccion = 0;
@@ -284,6 +286,24 @@ void obtenerInstruccion(){
   Serial.write(tipoDeInstruccion);
   Serial.print(",   numero: ");
   Serial.write(numeroDeInstruccion);
+
+  switch(tipoDeInstruccion) {
+    case CONTROL:
+      switch(numeroDeInstruccion)  {
+        case SOLICITUD_MODIFICAR_BANDERA:
+          indice = obtenerByteDeArregloByte(cadena + 3) - 48;
+          valor = obtenerByteDeArregloByte(cadena + 4) - 48;
+
+          M[indice] = valor;
+
+          Serial.print("\nM: ");
+          Serial.write(indice);
+          Serial.print(" = ");
+          Serial.write(valor);
+          
+      }
+      break;
+  }
 }
 
 byte obtenerByteDeArregloByte(byte* arreglo) {
