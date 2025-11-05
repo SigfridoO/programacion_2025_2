@@ -6,7 +6,7 @@ class PuertoSerie:
     def __init__(self):
         print("Dentro de puerto Serie")
         self.puerto_serie = serial.Serial()
-        self.puerto_serie.port = "COM8"
+        self.puerto_serie.port = "/dev/ttyUSB0"
         self.puerto_serie.baudrate = 115200
         self.puerto_serie.parity = serial.PARITY_NONE
         self.puerto_serie.timeout = 1
