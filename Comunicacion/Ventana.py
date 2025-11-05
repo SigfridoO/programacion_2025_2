@@ -1,4 +1,5 @@
-from PyQt6.QtWidgets import QApplication, QMainWindow,QVBoxLayout,QWidget,QHBoxLayout,QLabel
+from PyQt6.QtWidgets import QApplication, QMainWindow,QVBoxLayout,QWidget,\
+    QHBoxLayout,QLabel, QTabWidget
 import sys
 from PyQt6.QtCore import QRunnable, QThreadPool,pyqtSignal as Signal, QObject,Qt
 from pathlib import Path
@@ -33,25 +34,24 @@ class Ventana(QMainWindow):
     def __init__ (self):
         super().__init__()
 
-        layout_vertical_0 = QVBoxLayout()
+        layout_horizontal_0 = QHBoxLayout()
         contenedor = QWidget()
-        contenedor.setLayout(layout_vertical_0)
+        contenedor.setLayout(layout_horizontal_0)
+
+        caja1 = Caja("red")
+        caja2 = Caja("yellow")
+
+        tab_comunicacion = QTabWidget()
+        tab_comunicacion.addTab(caja2, "Serie")
+
+        tab_controladores = QTabWidget()
+        tab_controladores.addTab(caja1, "Semaforo")
+
+        layout_horizontal_0.addWidget(tab_comunicacion)
+        layout_horizontal_0.addWidget(tab_controladores)
         
 
-
-        self.caja_0 = Caja("gray")
-        self.caja_0.setFixedSize (40, 40)
-        caja_1 = Caja("orange")
-        caja_2 = Caja("pink")
-
-        layout_horizontal_0 = QHBoxLayout()
-        layout_horizontal_0.addWidget(self.caja_0)
-        layout_horizontal_0.addWidget(caja_1)
-
-        layout_vertical_0.addLayout(layout_horizontal_0)
-        layout_vertical_0.addWidget(caja_2)
-
-        #Enlasando con el worker
+        #Enlazando con el worker
         self.threadpool = QThreadPool()
         self.worker = Worker()
         self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
