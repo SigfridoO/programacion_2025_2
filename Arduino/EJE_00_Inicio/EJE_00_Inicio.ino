@@ -115,7 +115,10 @@ void loop() {
   
   // Codigo principal 
   
-  M[0] =(X_00 || M[0])&&!X_01;
+  M[0] =(X_00 || M[0] || M[2]) && !X_01 && !M[3];
+
+  M[2] = 0;
+  M[3] = 0;
   
   TON[0].entrada = M[0] && !TON[3].salida;
   actualizarTON(0);
