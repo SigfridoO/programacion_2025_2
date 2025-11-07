@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow,QVBoxLayout,QWidget,\
-    QHBoxLayout,QLabel, QTabWidget, QGridLayout
+    QHBoxLayout,QLabel, QTabWidget, QGridLayout, QPushButton
 import sys
 from PyQt6.QtCore import QRunnable, QThreadPool,pyqtSignal as Signal, QObject,Qt
 from pathlib import Path
@@ -43,12 +43,22 @@ class VentanaSemaforo(QWidget):
         caja5 = Caja("purple")
         caja6 = Caja("orange")
         caja7 = Caja("pink")
+        caja8 = Caja("violet")
+
+        self.boton_encender = QPushButton("Encender")
+        self.boton_apagar = QPushButton("Apagar")
+
+        layout_vertical_1 = QVBoxLayout()
+        layout_vertical_1.addWidget(caja3)
+        layout_vertical_1.addWidget(caja4)
+        layout_vertical_1.addWidget(caja8)
+
 
         layout_cuadricula.addWidget(caja2, 0, 0, 3, 1)
-        layout_cuadricula.addWidget(caja3, 0, 1)
-        layout_cuadricula.addWidget(caja4, 1, 1)
+        layout_cuadricula.addWidget(self.boton_encender, 0, 1)
+        layout_cuadricula.addWidget(self.boton_apagar, 1, 1)
         layout_cuadricula.addWidget(caja5, 2, 1)
-        layout_cuadricula.addWidget(caja6, 0, 2, 3, 1)
+        layout_cuadricula.addLayout(layout_vertical_1, 0, 2, 3, 1)
         layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
 
 class Ventana(QMainWindow):
