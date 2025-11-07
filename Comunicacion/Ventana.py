@@ -11,7 +11,9 @@ from Utils.Graficos import Caja
 
 class WorkerSignals(QObject):
 
-    luz_indicador = Signal(bool)
+    luz_indicador_rojo = Signal(bool)
+    luz_indicador_amarillo = Signal(bool)
+    luz_indicador_verde = Signal(bool)
 
     def __init__(self):
         super().__init__()
@@ -24,9 +26,21 @@ class Worker(QRunnable):
     def run(self):
         pass
 
-    def prender_indiccador(self,estado:bool = False):
+    def prender_indicador_rojo(self,estado:bool = False):
         try:
-            self.senales.luz_indicador.emit(estado)
+            self.senales.luz_indicador_rojo.emit(estado)
+        except Exception as e:
+            print("Se obtuvo un error")
+
+    def prender_indicador_amarillo(self,estado:bool = False):
+        try:
+            self.senales.luz_indicador_amarillo.emit(estado)
+        except Exception as e:
+            print("Se obtuvo un error")
+
+    def prender_indicador_verde(self,estado:bool = False):
+        try:
+            self.senales.luz_indicador_verde.emit(estado)
         except Exception as e:
             print("Se obtuvo un error")
 
@@ -45,13 +59,22 @@ class VentanaSemaforo(QWidget):
         caja7 = Caja("pink")
         caja8 = Caja("violet")
 
+        self.luz_roja  = QLabel()
+        self.modificador_indicador(self.luz_roja, "red")
+
+        self.luz_amarilla  = QLabel()
+        self.modificador_indicador(self.luz_amarilla, "yellow")
+
+        self.luz_verde  = QLabel()
+        self.modificador_indicador(self.luz_verde, "green")
+
         self.boton_encender = QPushButton("Encender")
         self.boton_apagar = QPushButton("Apagar")
 
         layout_vertical_1 = QVBoxLayout()
-        layout_vertical_1.addWidget(caja3)
-        layout_vertical_1.addWidget(caja4)
-        layout_vertical_1.addWidget(caja8)
+        layout_vertical_1.addWidget(self.luz_roja)
+        layout_vertical_1.addWidget(self.luz_amarilla)
+        layout_vertical_1.addWidget(self.luz_verde)
 
 
         layout_cuadricula.addWidget(caja2, 0, 0, 3, 1)
@@ -66,15 +89,15 @@ class VentanaSemaforo(QWidget):
     def establecer_worker(self, worker):
         self.worker = worker
         if self.worker:
-            self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
+            self.worker.senales.luz_indicador_rojo.connect(self.cambiar_indicador_rojo)
 
 
-    def cambiar_indicador(self, estado : bool):
+    def cambiar_indicador_rojo(self, estado : bool):
         if estado:
-            self.modificador_indicador(self.caja_0, "green")
+            self.modificador_indicador(self.luz_roja, "red")
             pass
         else:
-            self.modificador_indicador(self.caja_0,"gray")
+            self.modificador_indicador(self.luz_roja,"gray")
             pass
 
     def modificador_indicador(self, indicador:QLabel,color:str ):
