@@ -61,9 +61,13 @@ class VentanaSemaforo(QWidget):
         layout_cuadricula.addLayout(layout_vertical_1, 0, 2, 3, 1)
         layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
 
+        self.worker = None
 
+    def establecer_worker(self, worker):
+        self.worker = worker
+        if self.worker:
+            self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
 
-        self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
 
     def cambiar_indicador(self, estado : bool):
         if estado:
