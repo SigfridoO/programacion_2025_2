@@ -61,6 +61,22 @@ class VentanaSemaforo(QWidget):
         layout_cuadricula.addLayout(layout_vertical_1, 0, 2, 3, 1)
         layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
 
+
+
+        self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
+
+    def cambiar_indicador(self, estado : bool):
+        if estado:
+            self.modificador_indicador(self.caja_0, "green")
+            pass
+        else:
+            self.modificador_indicador(self.caja_0,"gray")
+            pass
+
+    def modificador_indicador(self, indicador:QLabel,color:str ):
+        indicador.setStyleSheet(f"background-color: {color} ; border-radius: 20")
+
+
 class Ventana(QMainWindow):
     def __init__ (self):
         super().__init__()
@@ -82,32 +98,21 @@ class Ventana(QMainWindow):
 
         layout_horizontal_0.addWidget(tab_comunicacion)
         layout_horizontal_0.addWidget(tab_controladores)
-        
-
-        #Enlazando con el worker
-        self.threadpool = QThreadPool()
-        self.worker = Worker()
-        self.worker.senales.luz_indicador.connect(self.cambiar_indicador)
-        self.threadpool.start(self.worker)
 
         #self.cambiar_indicador(True)
         
         self.setCentralWidget(contenedor)
         self.resize(400, 250)
 
+        #Enlazando con el worker
+        self.threadpool = QThreadPool()
+        self.worker = Worker()
+        self.threadpool.start(self.worker)
+
     def obtener_worker(self):
         return self.worker
 
-    def cambiar_indicador(self, estado : bool):
-        if estado:
-            self.modificador_indicador(self.caja_0, "green")
-            pass
-        else:
-            self.modificador_indicador(self.caja_0,"gray")
-            pass
 
-    def modificador_indicador(self, indicador:QLabel,color:str ):
-        indicador.setStyleSheet(f"background-color: {color} ; border-radius: 20")
 
 
 def main():
