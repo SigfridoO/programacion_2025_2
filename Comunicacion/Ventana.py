@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QMainWindow,QVBoxLayout,QWidget,\
-    QHBoxLayout,QLabel, QTabWidget
+    QHBoxLayout,QLabel, QTabWidget, QGridLayout
 import sys
 from PyQt6.QtCore import QRunnable, QThreadPool,pyqtSignal as Signal, QObject,Qt
 from pathlib import Path
@@ -30,6 +30,27 @@ class Worker(QRunnable):
         except Exception as e:
             print("Se obtuvo un error")
 
+class VentanaSemaforo(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        layout_cuadricula = QGridLayout()
+        self.setLayout(layout_cuadricula)
+
+        caja2 = Caja("yellow")
+        caja3 = Caja("blue")
+        caja4 = Caja("magenta")
+        caja5 = Caja("purple")
+        caja6 = Caja("orange")
+        caja7 = Caja("pink")
+
+        layout_cuadricula.addWidget(caja2, 0, 0, 3, 1)
+        layout_cuadricula.addWidget(caja3, 0, 1)
+        layout_cuadricula.addWidget(caja4, 1, 1)
+        layout_cuadricula.addWidget(caja5, 2, 1)
+        layout_cuadricula.addWidget(caja6, 0, 2, 3, 1)
+        layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
+
 class Ventana(QMainWindow):
     def __init__ (self):
         super().__init__()
@@ -39,13 +60,15 @@ class Ventana(QMainWindow):
         contenedor.setLayout(layout_horizontal_0)
 
         caja1 = Caja("red")
-        caja2 = Caja("yellow")
+
+
+        self.ventana_semaforo = VentanaSemaforo()
 
         tab_comunicacion = QTabWidget()
-        tab_comunicacion.addTab(caja2, "Serie")
+        tab_comunicacion.addTab(caja1, "Serie")
 
         tab_controladores = QTabWidget()
-        tab_controladores.addTab(caja1, "Semaforo")
+        tab_controladores.addTab(self.ventana_semaforo, "Semaforo")
 
         layout_horizontal_0.addWidget(tab_comunicacion)
         layout_horizontal_0.addWidget(tab_controladores)
@@ -60,7 +83,7 @@ class Ventana(QMainWindow):
         #self.cambiar_indicador(True)
         
         self.setCentralWidget(contenedor)
-        self.resize(250, 200)
+        self.resize(400, 250)
 
     def obtener_worker(self):
         return self.worker

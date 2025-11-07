@@ -10,8 +10,6 @@ class Inicio (Ventana):
         super().__init__()
         print("Dentro de Inicio")
 
-       
-
         control = Control()
         control.iniciar()
         control.iniciar_puerto_serie()
