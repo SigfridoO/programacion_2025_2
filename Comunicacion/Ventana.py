@@ -60,12 +60,15 @@ class VentanaSemaforo(QWidget):
         caja8 = Caja("violet")
 
         self.luz_roja  = QLabel()
+        self.luz_roja.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_roja, "red")
 
         self.luz_amarilla  = QLabel()
+        self.luz_amarilla.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_amarilla, "yellow")
 
         self.luz_verde  = QLabel()
+        self.luz_verde.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_verde, "green")
 
         self.boton_encender = QPushButton("Encender")
@@ -90,15 +93,29 @@ class VentanaSemaforo(QWidget):
         self.worker = worker
         if self.worker:
             self.worker.senales.luz_indicador_rojo.connect(self.cambiar_indicador_rojo)
+            self.worker.senales.luz_indicador_amarillo.connect(self.cambiar_indicador_amarillo)
+            self.worker.senales.luz_indicador_verde.connect(self.cambiar_indicador_verde)
 
 
     def cambiar_indicador_rojo(self, estado : bool):
         if estado:
             self.modificador_indicador(self.luz_roja, "red")
-            pass
         else:
             self.modificador_indicador(self.luz_roja,"gray")
-            pass
+            
+
+    def cambiar_indicador_amarillo(self, estado : bool):
+        if estado:
+            self.modificador_indicador(self.luz_amarilla, "yellow")
+        else:
+            self.modificador_indicador(self.luz_roja,"gray")
+            
+        
+    def cambiar_indicador_verde(self, estado : bool):
+        if estado:
+            self.modificador_indicador(self.luz_verde, "green")
+        else:
+            self.modificador_indicador(self.luz_roja,"gray")
 
     def modificador_indicador(self, indicador:QLabel,color:str ):
         indicador.setStyleSheet(f"background-color: {color} ; border-radius: 20")
