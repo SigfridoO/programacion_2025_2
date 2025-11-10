@@ -44,6 +44,17 @@ class Worker(QRunnable):
         except Exception as e:
             print("Se obtuvo un error")
 
+class VentanaPuertoSerie(QWidget):
+    def __init__(self):
+        super().__init__()
+
+        layout = QGridLayout()
+        self.setLayout(layout)
+        
+        boton_conectar = QPushButton("Conectar")
+        layout.addWidget(boton_conectar, 0, 0)
+
+
 class VentanaSemaforo(QWidget):
     def __init__(self):
         super().__init__()
@@ -133,9 +144,10 @@ class Ventana(QMainWindow):
 
 
         self.ventana_semaforo = VentanaSemaforo()
+        self.ventana_puerto_serie = VentanaPuertoSerie()
 
         tab_comunicacion = QTabWidget()
-        tab_comunicacion.addTab(caja1, "Serie")
+        tab_comunicacion.addTab(self.ventana_puerto_serie, "Serie")
 
         tab_controladores = QTabWidget()
         tab_controladores.addTab(self.ventana_semaforo, "Semaforo")
