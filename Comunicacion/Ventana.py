@@ -108,14 +108,14 @@ class VentanaSemaforo(QWidget):
         if estado:
             self.modificador_indicador(self.luz_amarilla, "yellow")
         else:
-            self.modificador_indicador(self.luz_roja,"gray")
+            self.modificador_indicador(self.luz_amarilla,"gray")
             
         
     def cambiar_indicador_verde(self, estado : bool):
         if estado:
             self.modificador_indicador(self.luz_verde, "green")
         else:
-            self.modificador_indicador(self.luz_roja,"gray")
+            self.modificador_indicador(self.luz_verde,"gray")
 
     def modificador_indicador(self, indicador:QLabel,color:str ):
         indicador.setStyleSheet(f"background-color: {color} ; border-radius: 20")
@@ -152,6 +152,8 @@ class Ventana(QMainWindow):
         self.threadpool = QThreadPool()
         self.worker = Worker()
         self.threadpool.start(self.worker)
+
+        self.ventana_semaforo.establecer_worker(self.worker)
 
     def obtener_worker(self):
         return self.worker

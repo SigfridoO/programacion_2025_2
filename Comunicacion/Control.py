@@ -59,11 +59,15 @@ class Control:
             if self.TON_0.salida:
                 #self.contador += 1
                 #print(self.contador)
-                #self.Y[0] = not self.Y[0]
-                self.Y[0] = self.ESP_X[3]
+                self.Y[0] = not self.Y[0]
+                self.Y[1] = not self.Y[1]
+                self.Y[2] = not self.Y[2]
+                #self.Y[0] = self.ESP_X[3]
                 print("Y[0]: ", self.Y[0])
                 if self.worker:
-                    self.worker.prender_indiccador(self.Y[0])
+                    self.worker.prender_indicador_rojo(self.Y[0])
+                    self.worker.prender_indicador_amarillo(self.Y[1])
+                    self.worker.prender_indicador_verde(self.Y[2])
 
             time.sleep(0.001)
 
