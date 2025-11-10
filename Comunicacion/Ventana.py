@@ -43,6 +43,17 @@ class Worker(QRunnable):
             self.senales.luz_indicador_verde.emit(estado)
         except Exception as e:
             print("Se obtuvo un error")
+            
+class VentanaPuertoSerie(QWidget):
+    def __init__(self):
+        super().__init__()
+        
+        self.botonConectar= QPushButton("Conectar")
+        
+        layout_cuadricula = QGridLayout()
+        self.setLayout(layout_cuadricula)
+        
+        layout_cuadricula.addWidget(self.botonConectar)
 
 class VentanaSemaforo(QWidget):
     def __init__(self):
@@ -60,12 +71,15 @@ class VentanaSemaforo(QWidget):
         caja8 = Caja("violet")
 
         self.luz_roja  = QLabel()
+        self.luz_roja.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_roja, "red")
 
         self.luz_amarilla  = QLabel()
+        self.luz_amarilla.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_amarilla, "yellow")
 
         self.luz_verde  = QLabel()
+        self.luz_verde.setFixedSize(40, 40)
         self.modificador_indicador(self.luz_verde, "green")
 
         self.boton_encender = QPushButton("Encender")
@@ -85,11 +99,16 @@ class VentanaSemaforo(QWidget):
         layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
 
         self.worker = None
+        
+        
+        
 
     def establecer_worker(self, worker):
         self.worker = worker
         if self.worker:
             self.worker.senales.luz_indicador_rojo.connect(self.cambiar_indicador_rojo)
+            self.worker.senales.luz_indicador_amarillo.connect(self.cambiar_indicador_amarillo)
+            self.worker.senales.luz_indicador_verde.connect(self.cambiar_indicador_verde)
 
 
     def cambiar_indicador_rojo(self, estado : bool):
@@ -100,8 +119,27 @@ class VentanaSemaforo(QWidget):
             self.modificador_indicador(self.luz_roja,"gray")
             pass
 
+
+    def cambiar_indicador_amarillo(self, estado : bool):
+        if estado:
+            self.modificador_indicador(self.luz_amarilla, "yellow")
+            pass
+        else:
+            self.modificador_indicador(self.luz_amarilla,"gray")
+            pass
+        
+
+    def cambiar_indicador_verde(self, estado : bool):
+        if estado:
+            self.modificador_indicador(self.luz_verde, "green")
+            pass
+        else:
+            self.modificador_indicador(self.luz_verde,"gray")
+            pass
+
+
     def modificador_indicador(self, indicador:QLabel,color:str ):
-        indicador.setStyleSheet(f"background-color: {color} ; border-radius: 20")
+        indicador.setStyleSheet(f"background-color: {color}; border-radius: 20")
 
 
 class Ventana(QMainWindow):
@@ -114,11 +152,11 @@ class Ventana(QMainWindow):
 
         caja1 = Caja("red")
 
-
+        self.ventana_puerto_serie = VentanaPuertoSerie()
         self.ventana_semaforo = VentanaSemaforo()
 
         tab_comunicacion = QTabWidget()
-        tab_comunicacion.addTab(caja1, "Serie")
+        tab_comunicacion.addTab(self.ventana_puerto_serie, "Serie")
 
         tab_controladores = QTabWidget()
         tab_controladores.addTab(self.ventana_semaforo, "Semaforo")
@@ -135,6 +173,8 @@ class Ventana(QMainWindow):
         self.threadpool = QThreadPool()
         self.worker = Worker()
         self.threadpool.start(self.worker)
+        
+        self.ventana_semaforo.establecer_worker(self.worker)
 
     def obtener_worker(self):
         return self.worker
