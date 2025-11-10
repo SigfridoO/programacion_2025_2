@@ -53,6 +53,22 @@ class VentanaPuertoSerie(QWidget):
         
         boton_conectar = QPushButton("Conectar")
         layout.addWidget(boton_conectar, 0, 0)
+        self.control = None
+
+        boton_conectar.setCheckable(True)
+        boton_conectar.clicked.connect(self.activar)
+
+    def establecer_control(self, control):
+        self.control = control
+    
+    def activar (self, estado):
+        print("Estado: ", estado)
+
+        if self.control and estado:
+            self.control.iniciar_comunicacion()
+
+        if self.control and not estado:
+            self.control.terminar_comunicacion()
 
 
 class VentanaSemaforo(QWidget):
@@ -166,11 +182,14 @@ class Ventana(QMainWindow):
         self.threadpool.start(self.worker)
 
         self.ventana_semaforo.establecer_worker(self.worker)
+        self.control = None
 
     def obtener_worker(self):
         return self.worker
 
-
+    def establecer_control(self, control):
+        self.control = control
+        self.ventana_puerto_serie.establecer_control(self.control)
 
 
 def main():

@@ -18,7 +18,7 @@ class PuertoSerie:
     def establecer_control(self, control):
         self.control = control
         
-    def prueba_lectura(self):
+    def hhprueba_lectura(self):
         print("--- Iniciando prueba ---")
         
         self.puerto_serie.open()

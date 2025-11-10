@@ -12,8 +12,10 @@ class Inicio (Ventana):
 
         control = Control()
         control.iniciar()
-        control.iniciar_puerto_serie()
+        #control.iniciar_puerto_serie()
         control.establecer_worker(self.obtener_worker())
+
+        self.establecer_control(control)
          
 
 def main():

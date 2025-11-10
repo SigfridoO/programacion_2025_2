@@ -38,6 +38,12 @@ class Control:
 
         self.worker = None
 
+    def iniciar_comunicacion(self):
+        self.puerto_serie.puerto_serie.open()
+
+    def terminar_comunicacion(self):
+        self.puerto_serie.puerto_serie.close()
+
     def establecer_worker(self, worker):
         self.worker = worker 
         
