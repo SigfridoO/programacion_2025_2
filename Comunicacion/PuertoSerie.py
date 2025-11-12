@@ -18,7 +18,7 @@ class PuertoSerie:
     def establecer_control(self, control):
         self.control = control
         
-    def hhprueba_lectura(self):
+    def prueba_lectura(self):
         print("--- Iniciando prueba ---")
         
         self.puerto_serie.open()
@@ -29,6 +29,16 @@ class PuertoSerie:
                     print(f"r: {r}")
                     if self.control:
                         self.control.Esp_x[2] = r[0] - 48
+
+    def enviar_mensaje(self, mensaje):
+        res = None
+        if self.puerto_serie.is_open:
+            self.puerto_serie.write(mensaje)
+            time.sleep(0.001)
+            res = self.puerto_serie.read(25)
+            print("Respuesta >>: ", res)
+            return res
+
 def main():
     print("Dentro de main")
     puerto_serie = PuertoSerie()

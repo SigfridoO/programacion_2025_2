@@ -115,6 +115,13 @@ class VentanaSemaforo(QWidget):
         layout_cuadricula.addWidget(caja7, 3, 0, 1, 3)
 
         self.worker = None
+        self.control = None
+
+        self.boton_encender.clicked.connect(self.encender_semaforo)
+        self.boton_apagar.clicked.connect(self.apagar_semaforo)
+
+    def establecer_control(self, control):
+        self.control = control
 
     def establecer_worker(self, worker):
         self.worker = worker
@@ -123,6 +130,13 @@ class VentanaSemaforo(QWidget):
             self.worker.senales.luz_indicador_amarillo.connect(self.cambiar_indicador_amarillo)
             self.worker.senales.luz_indicador_verde.connect(self.cambiar_indicador_verde)
 
+    def encender_semaforo(self):
+        if self.control:
+            self.control.activar_senal_esp32(2, 1)
+
+    def apagar_semaforo(self):
+        if self.control:
+            self.control.activar_senal_esp32(3, 1)
 
     def cambiar_indicador_rojo(self, estado : bool):
         if estado:
@@ -190,6 +204,7 @@ class Ventana(QMainWindow):
     def establecer_control(self, control):
         self.control = control
         self.ventana_puerto_serie.establecer_control(self.control)
+        self.ventana_semaforo.establecer_control(self.control)
 
 
 def main():

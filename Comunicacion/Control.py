@@ -2,6 +2,7 @@ import time
 import threading
 from Temporizador import Temporizador
 from PuertoSerie import PuertoSerie
+from Convertidor import Convertidor
 
 
 class Control:
@@ -38,11 +39,19 @@ class Control:
 
         self.worker = None
 
+        self.convertidor = Convertidor()
+
+
     def iniciar_comunicacion(self):
         self.puerto_serie.puerto_serie.open()
 
     def terminar_comunicacion(self):
         self.puerto_serie.puerto_serie.close()
+
+    def activar_senal_esp32(self, indice, estado):
+        mensaje = self.convertidor.generar_mensaje(1, 3, [indice, estado])
+        print (f"El mensaje a enviar es {mensaje}")
+        respuesta = self.puerto_serie.enviar_mensaje(mensaje)
 
     def establecer_worker(self, worker):
         self.worker = worker 
