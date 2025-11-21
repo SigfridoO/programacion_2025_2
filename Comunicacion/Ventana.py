@@ -7,6 +7,7 @@ ruta = Path(__file__).resolve().parent.parent
 sys.path.append(str(ruta))
 
 from Utils.Graficos import Caja
+from VentanaRasp import VentanaRasp
 
 
 class WorkerSignals(QObject):
@@ -181,6 +182,9 @@ class Ventana(QMainWindow):
 
         tab_controladores = QTabWidget()
         tab_controladores.addTab(self.ventana_semaforo, "Semaforo")
+
+        self.ventana_rasp = VentanaRasp()
+        tab_controladores.addTab(self.ventana_rasp, "Raspberry")
 
         layout_horizontal_0.addWidget(tab_comunicacion)
         layout_horizontal_0.addWidget(tab_controladores)
